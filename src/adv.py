@@ -59,16 +59,24 @@ play = True
 
 print('\n' * 80)
 print(f"Welcome to Chad's Game of Awesomeness {player.name}.")
-time.sleep(3)
+time.sleep(2)
 while (play == True):
     print(f"You are in the {player.room.name}.")
-    print(f"{player.room.description}")
+    print(f"{player.room.description}\n")
 
     player_input = input(
-        "Please choose a direction by typing n, e, s, w or q to quit. ")
+        "Please choose a direction by typing n, e, s, w or q to quit.")
     if player_input == 'q':
         print(
-            f"Thank you for playing Chad's Game of Awesomeness {player.name}.")
+            f"Thank you for playing Chad's Game of Awesomeness {player.name}.\n")
         play = False
     else:
-        print(f"Test")
+        if player_input == 'n' or player_input == 'e' or player_input == 's' or player_input == 'w':
+            next_room = getattr(player.room, f"{player_input}_to")
+            if next_room == 'wall':
+                print(
+                    f"You've run into a wall! Now wipe the blood from your nose and try a different direction.\n")
+            else:
+                player.room = next_room
+        else:
+            print(f"Please enter a valid input.")
