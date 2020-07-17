@@ -43,6 +43,12 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+# Put items in the rooms
+
+room['outside'].items = [items['shield']]
+room['foyer'].items = [items['sword']]
+room['treasure'].items = [items['debris']]
+
 #
 # Main
 #
@@ -50,7 +56,7 @@ room['treasure'].s_to = room['narrow']
 # Make a new player object that is currently in the 'outside' room.
 
 player_name = input("Please enter your name: ")
-player = Player(player_name, room['outside'], items['backpack'])
+player = Player(player_name, room['outside'], [items['backpack']])
 play = True
 
 # Write a loop that:
@@ -70,10 +76,20 @@ time.sleep(2)
 while (play == True):
     print(f"You are in the {player.room.name}.")
     print(f"{player.room.description}")
-    print(f"You have {player.inventory.items} in your inventory\n")
+    if len(player.room.items) == 0:
+        print(f"The room is empty.")
+    else:
+        room_items = [x.name for x in player.room.items]
+        print(f"You see {room_items} in the room.")
+    if len(player.inventory) == 0:
+        print(f"You have nothing in inventory.\n")
+    else:
+        player_inventory = [x.name for x in player.inventory]
+        print(
+            f"You have the following in your inventory: {player_inventory}\n")
 
     player_input = input(
-        "Please choose a direction by typing n, e, s, w or q to quit.")
+        "Please choose a direction by typing 'n', 'e', 's', 'w' or 'q' to quit.\nYou may also type 't' to take an item if there is an item in the room or 'd' to drop an item from inventory.")
     if player_input == 'q':
         print(
             f"Thank you for playing Chad's Game of Awesomeness {player.name}.\n")
