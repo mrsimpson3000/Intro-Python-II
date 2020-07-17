@@ -9,3 +9,4 @@ class Room:
         self.e_to = "wall"
         self.s_to = "wall"
         self.w_to = "wall"
+        self.items = []

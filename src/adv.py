@@ -1,5 +1,6 @@
 from room import Room
 from player import Player
+from item import Item
 
 import time
 
@@ -24,6 +25,12 @@ chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
 
+items = {
+    'sword': Item('a rusty sword', 'A well used rusty blade.'),
+    'debris': Item('some debris', 'Debris left from earlier adventurers who got here before you.'),
+    'shield': Item('a wooden shield', 'A small shield made from wood. It has seen better days.'),
+    'backpack': Item('a small backpack', 'A small backpack to carry your inventory in.')
+}
 
 # Link rooms together
 
@@ -43,7 +50,7 @@ room['treasure'].s_to = room['narrow']
 # Make a new player object that is currently in the 'outside' room.
 
 player_name = input("Please enter your name: ")
-player = Player(player_name, room['outside'])
+player = Player(player_name, room['outside'], items['backpack'])
 play = True
 
 # Write a loop that:
@@ -62,7 +69,8 @@ print(f"Welcome to Chad's Game of Awesomeness {player.name}.")
 time.sleep(2)
 while (play == True):
     print(f"You are in the {player.room.name}.")
-    print(f"{player.room.description}\n")
+    print(f"{player.room.description}")
+    print(f"You have {player.inventory.items} in your inventory\n")
 
     player_input = input(
         "Please choose a direction by typing n, e, s, w or q to quit.")
