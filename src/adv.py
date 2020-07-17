@@ -128,11 +128,29 @@ while (play == True):
                                 player.inventory.append(i)
                                 player.room.items.remove(i)
                                 exit = True
-                                break
                             else:
                                 mistake = input(
                                     f"You did not chose a valid item. Do you want to try again? Enter 'y' for yes or 'n' for no.")
                                 if mistake == 'n':
                                     exit = True
+        elif player_input == 'd':
+            if len(player.inventory) == 0:
+                print(f"You do not have any inventory to drop.")
+            else:
+                exit = False
+                while exit == False:
+                    player_inventory = [x.short_name for x in player.inventory]
+                    print(f"You can drop {player_inventory}.")
+                    player_input = input("Which item do you want to drop?")
+                    for i in player.inventory:
+                        if player_input == i.short_name:
+                            player.inventory.remove(i)
+                            player.room.items.append(i)
+                            exit = True
+                        else:
+                            mistake = input(
+                                f"You did not chose a valid item. Do you want to try again? Enter 'y' for yes or 'n' for no.")
+                            if mistake == 'n':
+                                exit = True
         else:
             print(f"Please enter a valid input.")
