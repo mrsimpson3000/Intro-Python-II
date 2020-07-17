@@ -26,10 +26,10 @@ earlier adventurers. The only exit is to the south."""),
 }
 
 items = {
-    'sword': Item('a rusty sword', 'A well used rusty blade.'),
-    'debris': Item('some debris', 'Debris left from earlier adventurers who got here before you.'),
-    'shield': Item('a wooden shield', 'A small shield made from wood. It has seen better days.'),
-    'backpack': Item('a small backpack', 'A small backpack to carry your inventory in.')
+    'sword': Item('sword', 'a rusty sword', 'a well used rusty sword'),
+    'debris': Item('debris', 'some debris', 'debris left from earlier adventurers who got here before you'),
+    'shield': Item('shield', 'a wooden shield', 'a small shield made from wood. It has seen better days'),
+    'backpack': Item('backpack', 'a small backpack', 'a small backpack to carry your inventory in')
 }
 
 # Link rooms together
@@ -70,13 +70,12 @@ play = True
 #
 # If the user enters "q", quit the game.
 
-print('\n' * 80)
-print(f"Welcome to Chad's Game of Awesomeness {player.name}.")
-time.sleep(2)
-while (play == True):
+
+def room_greeting():
     print(f"You are in the {player.room.name}.")
     print(f"{player.room.description}")
     if len(player.room.items) == 0:
+        room_items = []
         print(f"The room is empty.")
     else:
         room_items = [x.name for x in player.room.items]
@@ -88,8 +87,14 @@ while (play == True):
         print(
             f"You have the following in your inventory: {player_inventory}\n")
 
+
+print('\n' * 80)
+print(f"Welcome to Chad's Game of Awesomeness {player.name}.")
+time.sleep(2)
+while (play == True):
+    room_greeting()
     player_input = input(
-        "Please choose a direction by typing 'n', 'e', 's', 'w' or 'q' to quit.\nYou may also type 't' to take an item if there is an item in the room or 'd' to drop an item from inventory.")
+        "Please choose a direction by typing 'n', 'e', 's', 'w' or 'q' to quit.\nYou may also type 'l' to look at the items in the room or 't' to take an item or 'd' to drop an item from inventory.")
     if player_input == 'q':
         print(
             f"Thank you for playing Chad's Game of Awesomeness {player.name}.\n")
@@ -102,5 +107,32 @@ while (play == True):
                     f"You've run into a wall! Now wipe the blood from your nose and try a different direction.\n")
             else:
                 player.room = next_room
+        elif player_input == 'l' or player_input == 't':
+            if len(player.room.items) == 0:
+                print(f"There are no items in this room.\n")
+                time.sleep(2)
+            else:
+                if player_input == 'l':
+                    item_description = [
+                        x.description for x in player.room.items]
+                    print(f"You see {item_description}\n.")
+                    time.sleep(2)
+                else:
+                    exit = False
+                    while exit == False:
+                        room_items = [x.short_name for x in player.room.items]
+                        print(f"You can take {room_items}")
+                        player_input = input("Which item do you want to take?")
+                        for i in player.room.items:
+                            if player_input == i.short_name:
+                                player.inventory.append(i)
+                                player.room.items.remove(i)
+                                exit = True
+                                break
+                            else:
+                                mistake = input(
+                                    f"You did not chose a valid item. Do you want to try again? Enter 'y' for yes or 'n' for no.")
+                                if mistake == 'n':
+                                    exit = True
         else:
             print(f"Please enter a valid input.")
